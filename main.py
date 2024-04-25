@@ -8,7 +8,7 @@ import mediapipe as mp
 import math
 import os
 import face_recognition as fr
-
+#Hoz
 # Face Code
 def Code_Face(images):
     listacod = []
