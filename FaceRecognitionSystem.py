@@ -715,9 +715,9 @@ modelGlass = YOLO("Modelos/Gafas.pt")
 modelCap = YOLO("Modelos/Gorras.pt")
 
 # Path
-OutFolderPathUser = 'D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/DataBase/Users'
-PathUserCheck = "D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/DataBase/Users/"
-OutFolderPathFace = 'D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/DataBase/Faces'
+OutFolderPathUser = 'D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DataBase/Users'
+PathUserCheck = "D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DataBase/Users/"
+OutFolderPathFace = 'D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DataBase/Faces'
 
 # List
 info = []
@@ -750,13 +750,13 @@ detector = FaceObject.FaceDetection(min_detection_confidence= 0.5, model_selecti
 
 # Img OpenCV
 # Leer imágenes
-img_cap = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/cap.png")
-img_glass = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/glass.png")
-img_check = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/check.png")
-img_step0 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Step0.png")
-img_step1 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Step1.png")
-img_step2 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Step2.png")
-img_liche = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/LivenessCheck.png")
+img_cap = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/cap.png")
+img_glass = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/glass.png")
+img_check = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/check.png")
+img_step0 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Step0.png")
+img_step1 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Step1.png")
+img_step2 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Step2.png")
+img_liche = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/LivenessCheck.png")
 
 # Ventana principal
 pantalla = Tk()
@@ -764,12 +764,12 @@ pantalla.title("FACE RECOGNITION SYSTEM")
 pantalla.geometry("1280x720")
 
 # Fondo
-imagenF = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Inicio.png")
+imagenF = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Inicio.png")
 background = Label(image = imagenF, text = "Inicio")
 background.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
 # Fondo 2
-imagenB = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Back2.png")
+imagenB = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Back2.png")
 
 # Input Text
 # Register
@@ -785,12 +785,12 @@ InputPassReg.place(x= 110, y = 540)
 
 # Botones
 # Registro
-imagenBR = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/BtSign.png")
+imagenBR = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/BtSign.png")
 BtReg = Button(pantalla, text="Registro", image=imagenBR, height="40", width="200", command=Log)
 BtReg.place(x = 300, y = 580)
 
 # Inicio de sesion
-imagenBL = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/BtLogin.png")
+imagenBL = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/BtLogin.png")
 BtSign = Button(pantalla, text="Sign", image=imagenBL, height="40", width="200", command=Sign)
 BtSign.place(x = 850, y = 580)
 
