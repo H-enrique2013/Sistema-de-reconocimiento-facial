@@ -1,0 +1,4 @@
+{
+  "Interpreter": "env1_Facial\\Scripts\\python.exe",
+  "TestFramework": "Pytest"
+}
