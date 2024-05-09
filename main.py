@@ -675,9 +675,13 @@ imagenB = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial
 
 # Input Text
 # Register
+# DNI
+InputDNIReg = Entry(pantalla)
+InputDNIReg.place(x= 400, y = 320)
+
 # Name
 InputNameReg = Entry(pantalla)
-InputNameReg.place(x= 110, y = 320)
+InputNameReg.place(x= 120, y = 320)
 # User
 InputUserReg = Entry(pantalla)
 InputUserReg.place(x= 110, y = 430)
