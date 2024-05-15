@@ -550,11 +550,11 @@ def Sign():
 
 # Register Function
 def Log():
-    global RegName, RegUser, RegPass, InputNameReg, InputUserReg, InputPassReg, cap, lblVideo, pantalla2
+    global RegName, RegUser, RegPass, InputNameReg,InputApellPReg,InputApellMReg, InputUserReg, InputPassReg, cap, lblVideo, pantalla2
     # Name, User, PassWord
-    RegName, RegUser, RegPass = InputNameReg.get(), InputUserReg.get(), InputPassReg.get()
+    RegName,RegApellP,RegApellM, RegUser, RegPass = InputNameReg.get(), InputApellPReg.get(), InputApellMReg.get(), InputUserReg.get(), InputPassReg.get()
 
-    if len(RegName) == 0 or len(RegUser) == 0 or len(RegPass) == 0:
+    if len(RegName) == 0 or len(RegApellP) == 0 or len(RegApellM) == 0 or len(RegUser) == 0 or len(RegPass) == 0:
         # Info incompleted
         print(" FORMULARIO INCOMPLETO ")
 
@@ -580,12 +580,16 @@ def Log():
             # No Registred
             # Info
             info.append(RegName)
+            info.append(RegApellP)
+            info.append(RegApellM)
             info.append(RegUser)
             info.append(RegPass)
 
             # Save Info
             f = open(f"{OutFolderPathUser}/{RegUser}.txt", 'w')
             f.writelines(RegName + ',')
+            f.writelines(RegApellP + ',')
+            f.writelines(RegApellM + ',')
             f.writelines(RegUser + ',')
             f.writelines(RegPass + ',')
             f.close()
@@ -666,7 +670,7 @@ pantalla.title("FACE RECOGNITION SYSTEM")
 pantalla.geometry("1280x720")
 
 # Fondo
-imagenF = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Inicio.png")
+imagenF = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Inicio3.png")
 background = Label(image = imagenF, text = "Inicio")
 background.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
@@ -677,17 +681,23 @@ imagenB = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial
 # Register
 # DNI
 InputDNIReg = Entry(pantalla)
-InputDNIReg.place(x= 400, y = 320)
+InputDNIReg.place(x= 400, y = 170)
 
-# Name
+# Names
 InputNameReg = Entry(pantalla)
-InputNameReg.place(x= 120, y = 320)
+InputNameReg.place(x= 400, y = 245)
+# ApellPat
+InputApellPReg = Entry(pantalla)
+InputApellPReg.place(x= 400, y = 320)
+# ApetMat
+InputApellMReg = Entry(pantalla)
+InputApellMReg.place(x= 400, y = 395)
 # User
 InputUserReg = Entry(pantalla)
-InputUserReg.place(x= 110, y = 430)
+InputUserReg.place(x= 400, y = 470)
 # Pass
 InputPassReg = Entry(pantalla)
-InputPassReg.place(x= 110, y = 540)
+InputPassReg.place(x= 400, y = 545)
 
 # Botones
 # Registro
