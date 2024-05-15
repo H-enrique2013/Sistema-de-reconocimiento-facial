@@ -711,9 +711,8 @@ confThresholdCap = 0.5
 confThresholdGlass = 0.5
 
 # Modelo
-modelGlass = YOLO("Modelos/Gafas.pt")
-modelCap = YOLO("Modelos/Gorras.pt")
-
+modelGlass = YOLO(r".\Modelos\Gafas.pt")
+modelCap = YOLO(r".\Modelos\Gorras.pt")
 # Path
 OutFolderPathUser = 'D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DataBase/Users'
 PathUserCheck = "D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DataBase/Users/"
