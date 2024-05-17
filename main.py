@@ -8,6 +8,8 @@ import mediapipe as mp
 import math
 import os
 import face_recognition as fr
+from APIS_RENIEC_DNI import ApisNetPe
+import pandas as pd
 #Hoz
 # Face Code
 def Code_Face(images):
@@ -664,6 +666,27 @@ img_step2 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-
 img_liche = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/LivenessCheck.png")
 
 
+
+# Usar token personal
+APIS_TOKEN = "apis-token-5466.TL78WpI0CEvHdHL5BaCiR0TJYKPHQUvp"
+
+api_consultas = ApisNetPe(APIS_TOKEN)
+
+# Función de validación para asegurarse de que solo se ingresen números
+def validar_numero(char):
+    return char.isdigit()
+
+# Definir la función que se ejecutará al obtener el DNI
+def cargar_datos():
+    dni = str(InputDNIReg.get())
+    Reg_DNI = api_consultas.get_person(dni)
+    InputNameReg.delete(0, END)
+    InputNameReg.insert(0, Reg_DNI["nombres"])
+    InputApellPReg.delete(0, END)
+    InputApellPReg.insert(0, Reg_DNI["apellidoPaterno"])
+    InputApellMReg.delete(0, END)
+    InputApellMReg.insert(0, Reg_DNI["apellidoMaterno"])
+
 # Ventana principal
 pantalla = Tk()
 pantalla.title("FACE RECOGNITION SYSTEM")
@@ -677,24 +700,34 @@ background.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 # Fondo 2
 imagenB = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Back2.png")
 
+
 # Input Text
 # Register
 # DNI
-InputDNIReg = Entry(pantalla)
+validate_num = pantalla.register(validar_numero)
+InputDNIReg = Entry(pantalla, validate="key", validatecommand=(validate_num, '%S'))
 InputDNIReg.place(x= 400, y = 170)
+
+# Botón para cargar datos
+BtCargar = Button(pantalla, text="Cargar Data", command=cargar_datos)
+BtCargar.place(x=550, y=170)
 
 # Names
 InputNameReg = Entry(pantalla)
 InputNameReg.place(x= 400, y = 245)
+
 # ApellPat
 InputApellPReg = Entry(pantalla)
 InputApellPReg.place(x= 400, y = 320)
+
 # ApetMat
 InputApellMReg = Entry(pantalla)
 InputApellMReg.place(x= 400, y = 395)
+
 # User
 InputUserReg = Entry(pantalla)
 InputUserReg.place(x= 400, y = 470)
+
 # Pass
 InputPassReg = Entry(pantalla)
 InputPassReg.place(x= 400, y = 545)
