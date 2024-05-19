@@ -126,8 +126,9 @@ def Log_Biometric():
                 for rostros in res.multi_face_landmarks:
 
                     # Draw Face Mesh
-                    mpDraw.draw_landmarks(frame, rostros, FacemeshObject.FACE_CONNECTIONS, ConfigDraw, ConfigDraw)
-
+                    #mpDraw.draw_landmarks(frame, rostros, FacemeshObject.FACE_CONNECTIONS, ConfigDraw, ConfigDraw)
+                    mpDraw.draw_landmarks(frame, rostros, FacemeshObject.FACEMESH_TESSELATION, ConfigDraw, ConfigDraw)
+        
                     # Extract KeyPoints
                     for id, puntos in enumerate(rostros.landmark):
 
@@ -329,8 +330,8 @@ def Sign_Biometric():
                 for rostros in res.multi_face_landmarks:
 
                     # Draw Face Mesh
-                    mpDraw.draw_landmarks(frame, rostros, FacemeshObject.FACE_CONNECTIONS, ConfigDraw, ConfigDraw)
-
+                    #mpDraw.draw_landmarks(frame, rostros, FacemeshObject.FACE_CONNECTIONS, ConfigDraw, ConfigDraw)
+                    mpDraw.draw_landmarks(frame, rostros, FacemeshObject.FACEMESH_TESSELATION, ConfigDraw, ConfigDraw)
                     # Extract KeyPoints
                     for id, puntos in enumerate(rostros.landmark):
 

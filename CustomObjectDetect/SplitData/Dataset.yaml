@@ -1,7 +1,7 @@
 path: 
-train: ../SplitData/train/
-val: ../SplitData/val/
-test: ../SplitData/test/
+train: D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/CustomObjectDetect/SplitData/train/
+val: D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/CustomObjectDetect/SplitData/val/
+test: D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/CustomObjectDetect/SplitData/test/
 
 nc: 10
 names: ['Gafas','Sombrero','Abrigo','Camisa','Pantalones','Shorts','Falda','Vestido','Maleta','Zapato']
