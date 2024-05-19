@@ -9,6 +9,7 @@ import math
 import os
 import face_recognition as fr
 from ultralytics import YOLO
+from APIS_RENIEC_DNI import ApisNetPe
 
 # Face Code
 def Code_Face(images):
@@ -204,7 +205,7 @@ def Log_Biometric():
                 for rostros in res.multi_face_landmarks:
 
                     # Draw Face Mesh
-                    mpDraw.draw_landmarks(frame, rostros, FacemeshObject.FACE_CONNECTIONS, ConfigDraw, ConfigDraw)
+                    mpDraw.draw_landmarks(frame, rostros, FacemeshObject.FACEMESH_TESSELATION, ConfigDraw, ConfigDraw)
 
                     # Extract KeyPoints
                     for id, puntos in enumerate(rostros.landmark):
@@ -638,13 +639,12 @@ def Sign():
     Sign_Biometric()
 
 
-# Register Function
 def Log():
-    global RegName, RegUser, RegPass, InputNameReg, InputUserReg, InputPassReg, cap, lblVideo, pantalla2
+    global RegName, RegUser, RegPass, InputNameReg,InputApellPReg,InputApellMReg, InputUserReg, InputPassReg, cap, lblVideo, pantalla2
     # Name, User, PassWord
-    RegName, RegUser, RegPass = InputNameReg.get(), InputUserReg.get(), InputPassReg.get()
+    RegName,RegApellP,RegApellM, RegUser, RegPass = InputNameReg.get(), InputApellPReg.get(), InputApellMReg.get(), InputUserReg.get(), InputPassReg.get()
 
-    if len(RegName) == 0 or len(RegUser) == 0 or len(RegPass) == 0:
+    if len(RegName) == 0 or len(RegApellP) == 0 or len(RegApellM) == 0 or len(RegUser) == 0 or len(RegPass) == 0:
         # Info incompleted
         print(" FORMULARIO INCOMPLETO ")
 
@@ -670,12 +670,16 @@ def Log():
             # No Registred
             # Info
             info.append(RegName)
+            info.append(RegApellP)
+            info.append(RegApellM)
             info.append(RegUser)
             info.append(RegPass)
 
             # Save Info
             f = open(f"{OutFolderPathUser}/{RegUser}.txt", 'w')
             f.writelines(RegName + ',')
+            f.writelines(RegApellP + ',')
+            f.writelines(RegApellM + ',')
             f.writelines(RegUser + ',')
             f.writelines(RegPass + ',')
             f.close()
@@ -696,6 +700,7 @@ def Log():
             # Video
             lblVideo = Label(pantalla2)
             lblVideo.place(x=0, y=0)
+            #lblVideo.place(x=320, y=115)
 
             # Elegimos la camara
             cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
@@ -757,30 +762,71 @@ img_step1 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-
 img_step2 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Step2.png")
 img_liche = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/LivenessCheck.png")
 
+
+# Usar token personal
+APIS_TOKEN = "apis-token-5466.TL78WpI0CEvHdHL5BaCiR0TJYKPHQUvp"
+
+api_consultas = ApisNetPe(APIS_TOKEN)
+
+# Función de validación para asegurarse de que solo se ingresen números
+def validar_numero(char):
+    return char.isdigit()
+
+# Definir la función que se ejecutará al obtener el DNI
+def cargar_datos():
+    dni = str(InputDNIReg.get())
+    Reg_DNI = api_consultas.get_person(dni)
+    InputNameReg.delete(0, END)
+    InputNameReg.insert(0, Reg_DNI["nombres"])
+    InputApellPReg.delete(0, END)
+    InputApellPReg.insert(0, Reg_DNI["apellidoPaterno"])
+    InputApellMReg.delete(0, END)
+    InputApellMReg.insert(0, Reg_DNI["apellidoMaterno"])
+
 # Ventana principal
 pantalla = Tk()
 pantalla.title("FACE RECOGNITION SYSTEM")
 pantalla.geometry("1280x720")
 
 # Fondo
-imagenF = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Inicio.png")
+imagenF = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Inicio3.png")
 background = Label(image = imagenF, text = "Inicio")
 background.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
 # Fondo 2
 imagenB = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Back2.png")
 
+
 # Input Text
 # Register
-# Name
+# DNI
+validate_num = pantalla.register(validar_numero)
+InputDNIReg = Entry(pantalla, validate="key", validatecommand=(validate_num, '%S'))
+InputDNIReg.place(x= 400, y = 170)
+
+# Botón para cargar datos
+BtCargar = Button(pantalla, text="Cargar Data", command=cargar_datos)
+BtCargar.place(x=550, y=170)
+
+# Names
 InputNameReg = Entry(pantalla)
-InputNameReg.place(x= 110, y = 320)
+InputNameReg.place(x= 400, y = 245)
+
+# ApellPat
+InputApellPReg = Entry(pantalla)
+InputApellPReg.place(x= 400, y = 320)
+
+# ApetMat
+InputApellMReg = Entry(pantalla)
+InputApellMReg.place(x= 400, y = 395)
+
 # User
 InputUserReg = Entry(pantalla)
-InputUserReg.place(x= 110, y = 430)
+InputUserReg.place(x= 400, y = 470)
+
 # Pass
 InputPassReg = Entry(pantalla)
-InputPassReg.place(x= 110, y = 540)
+InputPassReg.place(x= 400, y = 545)
 
 # Botones
 # Registro
