@@ -134,9 +134,9 @@ def Profile():
     # Archivo
     UserFile = open(f"{OutFolderPathUser}/{UserName}.txt", 'r')
     InfoUser = UserFile.read().split(',')
-    Name = InfoUser[0]
-    User = InfoUser[1]
-    Pass = InfoUser[2]
+    Name = InfoUser[1]
+    User = InfoUser[4]
+    Pass = InfoUser[5]
     UserFile.close()
 
     # Check
