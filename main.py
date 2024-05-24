@@ -583,6 +583,7 @@ def Log():
             # No Registred
             # Info
             info.append(RegName)
+            info.append(RegName)
             info.append(RegApellP)
             info.append(RegApellM)
             info.append(RegUser)

@@ -640,9 +640,9 @@ def Sign():
 
 
 def Log():
-    global RegName, RegUser, RegPass, InputNameReg,InputApellPReg,InputApellMReg, InputUserReg, InputPassReg, cap, lblVideo, pantalla2
+    global RegName, RegUser, RegPass,InputDNIReg, InputNameReg,InputApellPReg,InputApellMReg, InputUserReg, InputPassReg, cap, lblVideo, pantalla2
     # Name, User, PassWord
-    RegName,RegApellP,RegApellM, RegUser, RegPass = InputNameReg.get(), InputApellPReg.get(), InputApellMReg.get(), InputUserReg.get(), InputPassReg.get()
+    RegDNI,RegName,RegApellP,RegApellM, RegUser, RegPass =InputDNIReg.get(),  InputNameReg.get(), InputApellPReg.get(), InputApellMReg.get(), InputUserReg.get(), InputPassReg.get()
 
     if len(RegName) == 0 or len(RegApellP) == 0 or len(RegApellM) == 0 or len(RegUser) == 0 or len(RegPass) == 0:
         # Info incompleted
@@ -669,6 +669,7 @@ def Log():
         else:
             # No Registred
             # Info
+            info.append(RegDNI)
             info.append(RegName)
             info.append(RegApellP)
             info.append(RegApellM)
@@ -677,6 +678,7 @@ def Log():
 
             # Save Info
             f = open(f"{OutFolderPathUser}/{RegUser}.txt", 'w')
+            f.writelines(RegDNI + ',')
             f.writelines(RegName + ',')
             f.writelines(RegApellP + ',')
             f.writelines(RegApellM + ',')
@@ -685,7 +687,10 @@ def Log():
             f.close()
 
             # Clean
+            InputDNIReg.delete(0, END)
             InputNameReg.delete(0, END)
+            InputApellPReg.delete(0, END)
+            InputApellMReg.delete(0, END)
             InputUserReg.delete(0, END)
             InputPassReg.delete(0, END)
 
