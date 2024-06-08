@@ -9,7 +9,10 @@ import math
 import os
 import face_recognition as fr
 from ultralytics import YOLO
+from tkinter import ttk
 from APIS_RENIEC_DNI import ApisNetPe
+import sqlite3
+from datetime import datetime
 
 # Face Code
 def Code_Face(images):
@@ -134,7 +137,10 @@ def Profile():
     # Archivo
     UserFile = open(f"{OutFolderPathUser}/{UserName}.txt", 'r')
     InfoUser = UserFile.read().split(',')
+    Dni = InfoUser[0]
     Name = InfoUser[1]
+    ApellidoPaterno = InfoUser[2]
+    ApellidoMaterno = InfoUser[3]
     User = InfoUser[4]
     Pass = InfoUser[5]
     UserFile.close()
@@ -164,6 +170,48 @@ def Profile():
         lblImgUser.configure(image=IMG)
         lblImgUser.image = IMG
 
+        # Registrar en base de datos
+        registrar_usuario_en_db(Dni, Name, ApellidoPaterno, ApellidoMaterno, User)
+
+def registrar_usuario_en_db(dni, nombres, apellido_paterno, apellido_materno, usuario):
+    conn = sqlite3.connect('Registros.db')
+    cursor = conn.cursor()
+
+    fecha_actual = datetime.now().strftime("%Y-%m-%d")
+    hora_actual = datetime.now().strftime("%H:%M:%S")
+
+    # Verificar si el usuario ya tiene un registro del día
+    cursor.execute("""
+    SELECT HoraEntrada, HoraSalida FROM Registros 
+    WHERE Usuario = ? AND Fecha = ?
+    """, (usuario, fecha_actual))
+    registros = cursor.fetchone()
+
+    if registros:
+        hora_entrada, hora_salida = registros
+        if not hora_salida:
+            # Registrar hora de salida y calcular tiempo total
+            hora_salida = hora_actual
+            hora_entrada_dt = datetime.strptime(hora_entrada, "%H:%M:%S")
+            hora_salida_dt = datetime.strptime(hora_salida, "%H:%M:%S")
+            tiempo_total = str(hora_salida_dt - hora_entrada_dt)
+
+            cursor.execute("""
+            UPDATE Registros 
+            SET HoraSalida = ?, Tiempo = ? 
+            WHERE Usuario = ? AND Fecha = ?
+            """, (hora_salida, tiempo_total, usuario, fecha_actual))
+        else:
+            print("El usuario ya tiene registrada la hora de salida.")
+    else:
+        # Registrar nueva hora de entrada
+        cursor.execute("""
+        INSERT INTO Registros (Nombres, ApellidoPaterno, ApellidoMaterno, Usuario, Fecha, HoraEntrada,DNI)
+        VALUES (?, ?, ?, ?, ?, ?)
+        """, (nombres, apellido_paterno, apellido_materno, usuario, fecha_actual, hora_actual,dni))
+
+    conn.commit()
+    conn.close()
 
 # Register Biometric
 def Log_Biometric():
@@ -638,6 +686,66 @@ def Sign():
     cap.set(4, 720)
     Sign_Biometric()
 
+# VER REGISTROS Function
+# Función para mostrar la ventana con la tabla de registros
+def Registros():
+    # Crear la nueva ventana
+    ventana_registros = Toplevel(pantalla)
+    ventana_registros.title("Registros")
+    ventana_registros.state('zoomed')  # Maximizar la ventana
+
+    # Cargar la imagen de fondo
+    imagen_fondo = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Back2.png")
+    fondo = Label(ventana_registros, image=imagen_fondo)
+    fondo.place(relwidth=1, relheight=1)
+
+    # Conectar a la base de datos
+    conn = sqlite3.connect('D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Livenessr/DATABASEAPP.db')
+    cursor = conn.cursor()
+
+    # Ejecutar la consulta para obtener los registros
+    cursor.execute("SELECT * FROM Registros")
+    registros = cursor.fetchall()
+
+    # Crear el marco para centrar la tabla
+    marco_tabla = Frame(ventana_registros, bg='white')
+    marco_tabla.place(relx=0.5, rely=0.5, anchor=CENTER, width=1000, height=500)
+
+    # Agregar barras de desplazamiento
+    scroll_x = Scrollbar(marco_tabla, orient=HORIZONTAL)
+    scroll_y = Scrollbar(marco_tabla, orient=VERTICAL)
+
+    # Crear la tabla para mostrar los registros
+    tree = ttk.Treeview(marco_tabla, columns=("Id", "Nombres", "ApellidoPaterno", "ApellidoMaterno", "Usuario", "Fecha", "HoraEntrada", "HoraSalida", "Tiempo", "DNI"), show='headings', xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
+    tree.heading("Id", text="ID")
+    tree.heading("Nombres", text="Nombres")
+    tree.heading("ApellidoPaterno", text="Apellido Paterno")
+    tree.heading("ApellidoMaterno", text="Apellido Materno")
+    tree.heading("Usuario", text="Usuario")
+    tree.heading("Fecha", text="Fecha")
+    tree.heading("HoraEntrada", text="Hora Entrada")
+    tree.heading("HoraSalida", text="Hora Salida")
+    tree.heading("Tiempo", text="Tiempo")
+    tree.heading("DNI", text="DNI")
+
+    # Configurar las barras de desplazamiento
+    scroll_x.pack(side=BOTTOM, fill=X)
+    scroll_y.pack(side=RIGHT, fill=Y)
+    scroll_x.config(command=tree.xview)
+    scroll_y.config(command=tree.yview)
+
+    # Agregar los registros a la tabla
+    for registro in registros:
+        tree.insert("", END, values=registro)
+
+    # Mostrar la tabla en el marco
+    tree.pack(expand=YES, fill=BOTH)
+
+    # Mantener la referencia de la imagen de fondo
+    ventana_registros.image = imagen_fondo
+
+    # Cerrar la conexión a la base de datos
+    conn.close()
 
 def Log():
     global RegName, RegUser, RegPass,InputDNIReg, InputNameReg,InputApellPReg,InputApellMReg, InputUserReg, InputPassReg, cap, lblVideo, pantalla2
@@ -843,6 +951,11 @@ BtReg.place(x = 300, y = 580)
 imagenBL = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/BtLogin.png")
 BtSign = Button(pantalla, text="Sign", image=imagenBL, height="40", width="200", command=Sign)
 BtSign.place(x = 850, y = 580)
+
+# VER REGISTROS
+imagenBT = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/BtLogin.png")
+BtTbl = Button(pantalla, text="Sign", image=imagenBT, height="40", width="200", command=Registros)
+BtTbl.place(x = 1000, y = 580)
 
 # Eject
 pantalla.mainloop()
