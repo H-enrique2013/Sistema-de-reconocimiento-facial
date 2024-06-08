@@ -207,7 +207,7 @@ def registrar_usuario_en_db(dni, nombres, apellido_paterno, apellido_materno, us
         # Registrar nueva hora de entrada
         cursor.execute("""
         INSERT INTO Registros (Nombres, ApellidoPaterno, ApellidoMaterno, Usuario, Fecha, HoraEntrada,DNI)
-        VALUES (?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?,?)
         """, (nombres, apellido_paterno, apellido_materno, usuario, fecha_actual, hora_actual,dni))
 
     conn.commit()
