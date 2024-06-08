@@ -700,7 +700,7 @@ def Registros():
     fondo.place(relwidth=1, relheight=1)
 
     # Conectar a la base de datos
-    conn = sqlite3.connect('D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Livenessr/DATABASEAPP.db')
+    conn = sqlite3.connect('D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DATABASEAPP.db')
     cursor = conn.cursor()
 
     # Ejecutar la consulta para obtener los registros
