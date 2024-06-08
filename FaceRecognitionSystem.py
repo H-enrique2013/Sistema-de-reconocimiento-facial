@@ -174,7 +174,7 @@ def Profile():
         registrar_usuario_en_db(Dni, Name, ApellidoPaterno, ApellidoMaterno, User)
 
 def registrar_usuario_en_db(dni, nombres, apellido_paterno, apellido_materno, usuario):
-    conn = sqlite3.connect('Registros.db')
+    conn = sqlite3.connect('D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DATABASEAPP.db')
     cursor = conn.cursor()
 
     fecha_actual = datetime.now().strftime("%Y-%m-%d")
