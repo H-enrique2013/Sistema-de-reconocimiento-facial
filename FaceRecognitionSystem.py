@@ -889,12 +889,21 @@ def validar_numero(char):
 def cargar_datos():
     dni = str(InputDNIReg.get())
     Reg_DNI = api_consultas.get_person(dni)
+    list_nombre=Reg_DNI["nombres"]
+    list_apellidoPat=Reg_DNI["apellidoPaterno"]
+    list_apellidoMat=Reg_DNI["apellidoMaterno"]
+    list_dni=Reg_DNI["numeroDocumento"]
+    #Generando Usuario
+    #Primera letra del nombre +apPaterno+primera letra del apMaterno+ 2 últimos digitos de su DNI
+    Usuario=list_nombre[0]+list_apellidoPat+list_apellidoMat[0]+list_dni[-2:]
     InputNameReg.delete(0, END)
-    InputNameReg.insert(0, Reg_DNI["nombres"])
+    InputNameReg.insert(0, list_nombre)
     InputApellPReg.delete(0, END)
-    InputApellPReg.insert(0, Reg_DNI["apellidoPaterno"])
+    InputApellPReg.insert(0, list_apellidoPat)
     InputApellMReg.delete(0, END)
-    InputApellMReg.insert(0, Reg_DNI["apellidoMaterno"])
+    InputApellMReg.insert(0, list_apellidoMat)
+    InputUserReg.delete(0, END)
+    InputUserReg.insert(0, Usuario)
 
 # Ventana principal
 pantalla = Tk()
