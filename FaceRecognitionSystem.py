@@ -129,7 +129,7 @@ def Profile():
 
     pantalla4 = Toplevel(pantalla)
     pantalla4.title("BIOMETRIC SIGN")
-    pantalla4.geometry("1280x720")
+    pantalla4.geometry("1281x728")
 
     back = Label(pantalla4, image=imagenB, text="Back")
     back.place(x=0, y=0, relwidth=1, relheight=1)
@@ -148,12 +148,20 @@ def Profile():
     # Check
     if User in clases:
         # Interfaz
-        texto1 = Label(pantalla4, text=f"BIENVENIDO {Name}")
-        texto1.place(x=580, y=50)
+        texto_user = Label(pantalla4, text=User, font=("Arial", 12))
+        texto_user.place(x=584, y=205)
+        texto_dni = Label(pantalla4, text=Dni, font=("Arial", 12))
+        texto_dni.place(x=580, y=260)
+        texto_name = Label(pantalla4, text=Name, font=("Arial", 12))
+        texto_name.place(x=650, y=315)
+        texto_appat = Label(pantalla4, text=ApellidoPaterno, font=("Arial", 12))
+        texto_appat.place(x=750, y=364)
+        texto_apmat = Label(pantalla4, text=ApellidoMaterno, font=("Arial", 12))
+        texto_apmat.place(x=750, y=420)
         # Label
         # Video
         lblImgUser = Label(pantalla4)
-        lblImgUser.place(x=490, y=80)
+        lblImgUser.place(x=100, y=93)
 
         # Imagen
         PosUserImg = clases.index(User)
@@ -923,32 +931,32 @@ imagenB = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial
 # Register
 # DNI
 validate_num = pantalla.register(validar_numero)
-InputDNIReg = Entry(pantalla, validate="key", validatecommand=(validate_num, '%S'))
-InputDNIReg.place(x= 400, y = 170)
+InputDNIReg = Entry(pantalla, validate="key", validatecommand=(validate_num, '%S'),font=("Arial", 12))
+InputDNIReg.place(x= 370, y = 170)
 
 # Botón para cargar datos
 BtCargar = Button(pantalla, text="Cargar Data", command=cargar_datos)
 BtCargar.place(x=550, y=170)
 
 # Names
-InputNameReg = Entry(pantalla)
-InputNameReg.place(x= 400, y = 245)
+InputNameReg = Entry(pantalla,font=("Arial", 12))
+InputNameReg.place(x= 370, y = 245)
 
 # ApellPat
-InputApellPReg = Entry(pantalla)
-InputApellPReg.place(x= 400, y = 320)
+InputApellPReg = Entry(pantalla,font=("Arial", 12))
+InputApellPReg.place(x= 370, y = 320)
 
 # ApetMat
-InputApellMReg = Entry(pantalla)
-InputApellMReg.place(x= 400, y = 395)
+InputApellMReg = Entry(pantalla,font=("Arial", 12))
+InputApellMReg.place(x= 370, y = 390)
 
 # User
-InputUserReg = Entry(pantalla)
-InputUserReg.place(x= 400, y = 470)
+InputUserReg = Entry(pantalla,font=("Arial", 12))
+InputUserReg.place(x= 370, y = 460)
 
 # Pass
-InputPassReg = Entry(pantalla)
-InputPassReg.place(x= 400, y = 545)
+InputPassReg = Entry(pantalla,font=("Arial", 12))
+InputPassReg.place(x= 370, y = 530)
 
 # Botones
 # Registro
