@@ -632,8 +632,16 @@ def Sign_Biometric():
                                                 if Match[min]:
                                                     # UserName
                                                     UserName = clases[min].upper()
-
+                                                    pantalla3.after(5000, Close_Windows2)
                                                     Profile()
+                                                else:
+                                                    cv2.rectangle(frame, (xi, yi, an, al), (0, 255, 0), 2)
+                                                    # IMG check Liveness
+                                                    allich, anlich, c = img_lifalse.shape
+                                                    frame[50:50 + allich, 50:50 + anlich] = img_lifalse
+                                                    # Close Window
+                                                    pantalla3.after(5000, Close_Windows2)
+                                                    close = pantalla3.protocol("WM_DELETE_WINDOW", Close_Windows2)
                                         if glass == True:
                                             # IMG Glass
                                             algla, angla, c = img_glass.shape
@@ -891,6 +899,7 @@ img_step0 = cv2.imread("./SetUp/Step0.png")
 img_step1 = cv2.imread("./SetUp/Step1.png")
 img_step2 = cv2.imread("./SetUp/Step2.png")
 img_liche = cv2.imread("./SetUp/LivenessCheck.png")
+img_lifalse = cv2.imread("./SetUp/LivenessFalso.png")
 
 
 # Usar token personal
