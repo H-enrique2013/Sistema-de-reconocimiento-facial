@@ -945,7 +945,7 @@ InputDNIReg.place(x= 370, y = 170)
 
 # Botón para cargar datos
 BtCargar = Button(pantalla, text="Cargar Data", command=cargar_datos)
-BtCargar.place(x=550, y=170)
+BtCargar.place(x=560, y=170)
 
 # Names
 InputNameReg = Entry(pantalla,font=("Arial", 12))
