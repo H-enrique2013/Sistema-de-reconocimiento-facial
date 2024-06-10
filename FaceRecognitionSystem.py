@@ -182,7 +182,7 @@ def Profile():
         registrar_usuario_en_db(Dni, Name, ApellidoPaterno, ApellidoMaterno, User)
 
 def registrar_usuario_en_db(dni, nombres, apellido_paterno, apellido_materno, usuario):
-    conn = sqlite3.connect('D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DATABASEAPP.db')
+    conn = sqlite3.connect('./DATABASEAPP.db')
     cursor = conn.cursor()
 
     fecha_actual = datetime.now().strftime("%Y-%m-%d")
@@ -197,7 +197,18 @@ def registrar_usuario_en_db(dni, nombres, apellido_paterno, apellido_materno, us
 
     if registros:
         hora_entrada, hora_salida = registros
-        if not hora_salida:
+        if hora_salida:
+            # Si ya existe una hora de salida, calcular el nuevo tiempo total
+            hora_entrada_dt = datetime.strptime(hora_entrada, "%H:%M:%S")
+            nueva_hora_salida_dt = datetime.strptime(hora_actual, "%H:%M:%S")
+            tiempo_total = str(nueva_hora_salida_dt - hora_entrada_dt)
+
+            cursor.execute("""
+            UPDATE Registros 
+            SET HoraSalida = ?, Tiempo = ? 
+            WHERE Usuario = ? AND Fecha = ?
+            """, (hora_actual, tiempo_total, usuario, fecha_actual))
+        else:
             # Registrar hora de salida y calcular tiempo total
             hora_salida = hora_actual
             hora_entrada_dt = datetime.strptime(hora_entrada, "%H:%M:%S")
@@ -209,14 +220,12 @@ def registrar_usuario_en_db(dni, nombres, apellido_paterno, apellido_materno, us
             SET HoraSalida = ?, Tiempo = ? 
             WHERE Usuario = ? AND Fecha = ?
             """, (hora_salida, tiempo_total, usuario, fecha_actual))
-        else:
-            print("El usuario ya tiene registrada la hora de salida.")
     else:
         # Registrar nueva hora de entrada
         cursor.execute("""
-        INSERT INTO Registros (Nombres, ApellidoPaterno, ApellidoMaterno, Usuario, Fecha, HoraEntrada,DNI)
-        VALUES (?, ?, ?, ?, ?, ?,?)
-        """, (nombres, apellido_paterno, apellido_materno, usuario, fecha_actual, hora_actual,dni))
+        INSERT INTO Registros (Nombres, ApellidoPaterno, ApellidoMaterno, Usuario, Fecha, HoraEntrada, DNI)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (nombres, apellido_paterno, apellido_materno, usuario, fecha_actual, hora_actual, dni))
 
     conn.commit()
     conn.close()
@@ -703,12 +712,12 @@ def Registros():
     ventana_registros.state('zoomed')  # Maximizar la ventana
 
     # Cargar la imagen de fondo
-    imagen_fondo = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Back2.png")
+    imagen_fondo = PhotoImage(file="./SetUp/Back2.png")
     fondo = Label(ventana_registros, image=imagen_fondo)
     fondo.place(relwidth=1, relheight=1)
 
     # Conectar a la base de datos
-    conn = sqlite3.connect('D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DATABASEAPP.db')
+    conn = sqlite3.connect('./DATABASEAPP.db')
     cursor = conn.cursor()
 
     # Ejecutar la consulta para obtener los registros
@@ -840,9 +849,9 @@ confThresholdGlass = 0.5
 modelGlass = YOLO(r".\Modelos\Gafas.pt")
 modelCap = YOLO(r".\Modelos\Gorras.pt")
 # Path
-OutFolderPathUser = 'D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DataBase/Users'
-PathUserCheck = "D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DataBase/Users/"
-OutFolderPathFace = 'D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/DataBase/Faces'
+OutFolderPathUser = './DataBase/Users'
+PathUserCheck = "./DataBase/Users/"
+OutFolderPathFace = './DataBase/Faces'
 
 # List
 info = []
@@ -875,13 +884,13 @@ detector = FaceObject.FaceDetection(min_detection_confidence= 0.5, model_selecti
 
 # Img OpenCV
 # Leer imágenes
-img_cap = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/cap.png")
-img_glass = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/glass.png")
-img_check = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/check.png")
-img_step0 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Step0.png")
-img_step1 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Step1.png")
-img_step2 = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Step2.png")
-img_liche = cv2.imread("D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/LivenessCheck.png")
+img_cap = cv2.imread("./SetUp/cap.png")
+img_glass = cv2.imread("./SetUp/glass.png")
+img_check = cv2.imread("./SetUp/check.png")
+img_step0 = cv2.imread("./SetUp/Step0.png")
+img_step1 = cv2.imread("./SetUp/Step1.png")
+img_step2 = cv2.imread("./SetUp/Step2.png")
+img_liche = cv2.imread("./SetUp/LivenessCheck.png")
 
 
 # Usar token personal
@@ -919,12 +928,12 @@ pantalla.title("FACE RECOGNITION SYSTEM")
 pantalla.geometry("1280x720")
 
 # Fondo
-imagenF = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Inicio3.png")
+imagenF = PhotoImage(file="./SetUp/Inicio3.png")
 background = Label(image = imagenF, text = "Inicio")
 background.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
 # Fondo 2
-imagenB = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/Back2.png")
+imagenB = PhotoImage(file="./SetUp/Back2.png")
 
 
 # Input Text
@@ -960,17 +969,17 @@ InputPassReg.place(x= 370, y = 530)
 
 # Botones
 # Registro
-imagenBR = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/BtSign.png")
+imagenBR = PhotoImage(file="./SetUp/BtSign.png")
 BtReg = Button(pantalla, text="Registro", image=imagenBR, height="40", width="200", command=Log)
 BtReg.place(x = 300, y = 580)
 
 # Inicio de sesion
-imagenBL = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/BtLogin.png")
+imagenBL = PhotoImage(file="./SetUp/BtLogin.png")
 BtSign = Button(pantalla, text="Sign", image=imagenBL, height="40", width="200", command=Sign)
 BtSign.place(x = 850, y = 580)
 
 # VER REGISTROS
-imagenBT = PhotoImage(file="D:/Proyectos Enrique/Sistema-de-reconocimiento-facial-y-Liveness/SetUp/BtLogin.png")
+imagenBT = PhotoImage(file="./SetUp/BtLogin.png")
 BtTbl = Button(pantalla, text="Sign", image=imagenBT, height="40", width="200", command=Registros)
 BtTbl.place(x = 1000, y = 580)
 
