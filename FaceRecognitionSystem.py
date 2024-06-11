@@ -714,13 +714,45 @@ def Sign():
 # VER REGISTROS Function
 # Función para mostrar la ventana con la tabla de registros
 def Registros():
+    def actualizar_tabla():
+        # Limpiar la tabla actual
+        for i in tree.get_children():
+            tree.delete(i)
+        
+        # Calcular el rango de registros a mostrar
+        inicio = (pagina_actual - 1) * registros_por_pagina
+        fin = inicio + registros_por_pagina
+
+        # Agregar los registros a la tabla
+        for registro in registros[inicio:fin]:
+            tree.insert("", END, values=registro)
+
+    def siguiente_pagina():
+        nonlocal pagina_actual
+        if pagina_actual * registros_por_pagina < len(registros):
+            pagina_actual += 1
+            actualizar_tabla()
+
+    def anterior_pagina():
+        nonlocal pagina_actual
+        if pagina_actual > 1:
+            pagina_actual -= 1
+            actualizar_tabla()
+
+    def cambiar_registros_por_pagina(event):
+        nonlocal registros_por_pagina
+        registros_por_pagina = int(combo.get())
+        nonlocal pagina_actual
+        pagina_actual = 1
+        actualizar_tabla()
+
     # Crear la nueva ventana
     ventana_registros = Toplevel(pantalla)
     ventana_registros.title("Registros")
     ventana_registros.state('zoomed')  # Maximizar la ventana
 
     # Cargar la imagen de fondo
-    imagen_fondo = PhotoImage(file="./SetUp/RegistroAsistencia.png")
+    imagen_fondo = PhotoImage(file="./SetUp/Back2.png")
     fondo = Label(ventana_registros, image=imagen_fondo)
     fondo.place(relwidth=1, relheight=1)
 
@@ -732,17 +764,23 @@ def Registros():
     cursor.execute("SELECT * FROM Registros")
     registros = cursor.fetchall()
 
+    # Variables de control para la paginación
+    registros_por_pagina = 10
+    pagina_actual = 1
+
     # Crear el marco para centrar la tabla
     marco_tabla = Frame(ventana_registros, bg='white')
-    marco_tabla.place(relx=0.5, rely=0.5, anchor=CENTER, width=1125, height=510)
+    marco_tabla.place(relx=0.5, rely=0.5, anchor=CENTER, width=1000, height=500)
+
+    # ComboBox para seleccionar la cantidad de registros por página
+    combo = ttk.Combobox(ventana_registros, values=[10, 50, 100], state="readonly", width=5)
+    combo.current(0)
+    combo.bind("<<ComboboxSelected>>", cambiar_registros_por_pagina)
+    combo.place(relx=0.85, rely=0.1, anchor=NE)
 
     # Agregar barras de desplazamiento
     scroll_x = Scrollbar(marco_tabla, orient=HORIZONTAL)
     scroll_y = Scrollbar(marco_tabla, orient=VERTICAL)
-
-    # Crear y configurar estilo para la cabecera de la tabla
-    estilo = ttk.Style()
-    estilo.configure("Treeview.Heading", background="red", foreground="red", font=('Arial', 10, 'bold'))
 
     # Crear la tabla para mostrar los registros
     tree = ttk.Treeview(marco_tabla, columns=("Id", "Nombres", "ApellidoPaterno", "ApellidoMaterno", "Usuario", "Fecha", "HoraEntrada", "HoraSalida", "Tiempo", "DNI"), show='headings', xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
@@ -763,18 +801,29 @@ def Registros():
     scroll_x.config(command=tree.xview)
     scroll_y.config(command=tree.yview)
 
-    # Agregar los registros a la tabla
-    for registro in registros:
-        tree.insert("", END, values=registro)
-
     # Mostrar la tabla en el marco
     tree.pack(expand=YES, fill=BOTH)
+
+    # Crear un marco para los botones de navegación
+    marco_botones = Frame(ventana_registros, bg=ventana_registros.cget('bg'))  # Establecer el color de fondo del marco igual al color de fondo de la ventana
+    marco_botones.place(relx=0.5, rely=0.95, anchor=CENTER)
+
+    # Botones de navegación
+    btn_anterior = Button(marco_botones, text="<< Anterior ", command=anterior_pagina, bg=ventana_registros.cget('bg'), bd=0)  # Establecer el color de fondo del botón igual al color de fondo de la ventana y eliminar el borde
+    btn_anterior.pack(side=LEFT, padx=10)
+
+    btn_siguiente = Button(marco_botones, text="Siguiente >>", command=siguiente_pagina, bg=ventana_registros.cget('bg'), bd=0)  # Establecer el color de fondo del botón igual al color de fondo de la ventana y eliminar el borde
+    btn_siguiente.pack(side=LEFT, padx=10)
+
+    # Inicializar la tabla con los primeros registros
+    actualizar_tabla()
 
     # Mantener la referencia de la imagen de fondo
     ventana_registros.image = imagen_fondo
 
     # Cerrar la conexión a la base de datos
     conn.close()
+
 
 def Log():
     global RegName, RegUser, RegPass,InputDNIReg, InputNameReg,InputApellPReg,InputApellMReg, InputUserReg, InputPassReg, cap, lblVideo, pantalla2
