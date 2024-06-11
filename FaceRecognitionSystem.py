@@ -696,7 +696,7 @@ def Sign():
     # 3° Ventana
     pantalla3 = Toplevel(pantalla)
     pantalla3.title("BIOMETRIC SIGN")
-    pantalla3.geometry("1280x720")
+    pantalla3.geometry("1281x728")
 
     back2 = Label(pantalla3, image=imagenB, text="Back")
     back2.place(x=0, y=0, relwidth=1, relheight=1)
@@ -707,8 +707,8 @@ def Sign():
 
     # Elegimos la camara
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-    cap.set(3, 1280)
-    cap.set(4, 720)
+    cap.set(3, 1281)
+    cap.set(4, 728)
     Sign_Biometric()
 
 # VER REGISTROS Function
@@ -720,7 +720,7 @@ def Registros():
     ventana_registros.state('zoomed')  # Maximizar la ventana
 
     # Cargar la imagen de fondo
-    imagen_fondo = PhotoImage(file="./SetUp/Back2.png")
+    imagen_fondo = PhotoImage(file="./SetUp/RegistroAsistencia.png")
     fondo = Label(ventana_registros, image=imagen_fondo)
     fondo.place(relwidth=1, relheight=1)
 
@@ -734,11 +734,15 @@ def Registros():
 
     # Crear el marco para centrar la tabla
     marco_tabla = Frame(ventana_registros, bg='white')
-    marco_tabla.place(relx=0.5, rely=0.5, anchor=CENTER, width=1000, height=500)
+    marco_tabla.place(relx=0.5, rely=0.5, anchor=CENTER, width=1125, height=510)
 
     # Agregar barras de desplazamiento
     scroll_x = Scrollbar(marco_tabla, orient=HORIZONTAL)
     scroll_y = Scrollbar(marco_tabla, orient=VERTICAL)
+
+    # Crear y configurar estilo para la cabecera de la tabla
+    estilo = ttk.Style()
+    estilo.configure("Treeview.Heading", background="red", foreground="red", font=('Arial', 10, 'bold'))
 
     # Crear la tabla para mostrar los registros
     tree = ttk.Treeview(marco_tabla, columns=("Id", "Nombres", "ApellidoPaterno", "ApellidoMaterno", "Usuario", "Fecha", "HoraEntrada", "HoraSalida", "Tiempo", "DNI"), show='headings', xscrollcommand=scroll_x.set, yscrollcommand=scroll_y.set)
@@ -934,10 +938,10 @@ def cargar_datos():
 # Ventana principal
 pantalla = Tk()
 pantalla.title("FACE RECOGNITION SYSTEM")
-pantalla.geometry("1280x720")
+pantalla.geometry("1280x753")
 
 # Fondo
-imagenF = PhotoImage(file="./SetUp/Inicio3.png")
+imagenF = PhotoImage(file="./SetUp/Inicio.png")
 background = Label(image = imagenF, text = "Inicio")
 background.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
@@ -950,47 +954,48 @@ imagenB = PhotoImage(file="./SetUp/Back2.png")
 # DNI
 validate_num = pantalla.register(validar_numero)
 InputDNIReg = Entry(pantalla, validate="key", validatecommand=(validate_num, '%S'),font=("Arial", 12))
-InputDNIReg.place(x= 370, y = 170)
+InputDNIReg.place(x= 250, y = 310)
 
 # Botón para cargar datos
-BtCargar = Button(pantalla, text="Cargar Data", command=cargar_datos)
-BtCargar.place(x=560, y=170)
+BtCargar = Button(pantalla, text="Cargar Data", command=cargar_datos,bg="grey",
+                  highlightbackground="red",highlightthickness=2,fg="red",font=("Helvetica",8, "bold"))
+BtCargar.place(x=450, y=310)
 
 # Names
 InputNameReg = Entry(pantalla,font=("Arial", 12))
-InputNameReg.place(x= 370, y = 245)
+InputNameReg.place(x= 250, y = 370)
 
 # ApellPat
 InputApellPReg = Entry(pantalla,font=("Arial", 12))
-InputApellPReg.place(x= 370, y = 320)
+InputApellPReg.place(x= 250, y = 430)
 
 # ApetMat
 InputApellMReg = Entry(pantalla,font=("Arial", 12))
-InputApellMReg.place(x= 370, y = 390)
+InputApellMReg.place(x= 250, y = 490)
 
 # User
 InputUserReg = Entry(pantalla,font=("Arial", 12))
-InputUserReg.place(x= 370, y = 460)
+InputUserReg.place(x= 250, y = 550)
 
 # Pass
-InputPassReg = Entry(pantalla,font=("Arial", 12))
-InputPassReg.place(x= 370, y = 530)
+InputPassReg = Entry(pantalla, font=("Arial", 12), show='*')
+InputPassReg.place(x= 250, y = 610)
 
 # Botones
 # Registro
 imagenBR = PhotoImage(file="./SetUp/BtSign.png")
-BtReg = Button(pantalla, text="Registro", image=imagenBR, height="40", width="200", command=Log)
-BtReg.place(x = 300, y = 580)
+BtReg = Button(pantalla, text="Registro", image=imagenBR, height="40", width="200", command=Log,highlightbackground="red",highlightthickness=2)
+BtReg.place(x = 160, y = 670)
 
 # Inicio de sesion
 imagenBL = PhotoImage(file="./SetUp/BtLogin.png")
-BtSign = Button(pantalla, text="Sign", image=imagenBL, height="40", width="200", command=Sign)
-BtSign.place(x = 850, y = 580)
+BtSign = Button(pantalla, text="Sign", image=imagenBL, height="40", width="200", command=Sign,highlightbackground="red",highlightthickness=2)
+BtSign.place(x = 610, y = 670)
 
 # VER REGISTROS
-imagenBT = PhotoImage(file="./SetUp/BtLogin.png")
-BtTbl = Button(pantalla, text="Sign", image=imagenBT, height="40", width="200", command=Registros)
-BtTbl.place(x = 1000, y = 580)
+imagenBT = PhotoImage(file="./SetUp/Asistencia.png")
+BtTbl = Button(pantalla, text="Sign", image=imagenBT, height="40", width="200", command=Registros,highlightbackground="red",highlightthickness=2)
+BtTbl.place(x = 955, y = 670)
 
 # Eject
 pantalla.mainloop()
