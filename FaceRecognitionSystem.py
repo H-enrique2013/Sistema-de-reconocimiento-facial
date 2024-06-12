@@ -130,6 +130,7 @@ def Profile():
     pantalla4 = Toplevel(pantalla)
     pantalla4.title("BIOMETRIC SIGN")
     pantalla4.geometry("1281x728")
+    pantalla4.resizable(False, False) 
 
     back = Label(pantalla4, image=imagenB, text="Back")
     back.place(x=0, y=0, relwidth=1, relheight=1)
@@ -697,6 +698,7 @@ def Sign():
     pantalla3 = Toplevel(pantalla)
     pantalla3.title("BIOMETRIC SIGN")
     pantalla3.geometry("1281x728")
+    pantalla3.resizable(False, False) 
 
     back2 = Label(pantalla3, image=imagenB, text="Back")
     back2.place(x=0, y=0, relwidth=1, relheight=1)
@@ -747,13 +749,14 @@ def Registros():
         actualizar_tabla()
 
     # Crear la nueva ventana
-    ventana_registros = Toplevel(pantalla)
-    ventana_registros.title("Registros")
-    ventana_registros.state('zoomed')  # Maximizar la ventana
+    pantalla5 = Toplevel(pantalla)
+    pantalla5.title("Registros")
+    pantalla5.geometry("1280x720")
+    pantalla5.resizable(False, False) 
 
     # Cargar la imagen de fondo
-    imagen_fondo = PhotoImage(file="./SetUp/Back2.png")
-    fondo = Label(ventana_registros, image=imagen_fondo)
+    imagen_fondo = PhotoImage(file="./SetUp/RegistroAsistencia.png")
+    fondo = Label(pantalla5, image=imagen_fondo)
     fondo.place(relwidth=1, relheight=1)
 
     # Conectar a la base de datos
@@ -769,14 +772,14 @@ def Registros():
     pagina_actual = 1
 
     # Crear el marco para centrar la tabla
-    marco_tabla = Frame(ventana_registros, bg='white')
-    marco_tabla.place(relx=0.5, rely=0.5, anchor=CENTER, width=1000, height=500)
+    marco_tabla = Frame(pantalla5, bg='white')
+    marco_tabla.place(relx=0.5, rely=0.51, anchor=CENTER, width=1128, height=605)
 
     # ComboBox para seleccionar la cantidad de registros por página
-    combo = ttk.Combobox(ventana_registros, values=[10, 50, 100], state="readonly", width=5)
+    combo = ttk.Combobox(pantalla5, values=[10, 50, 100], state="readonly", width=5)
     combo.current(0)
     combo.bind("<<ComboboxSelected>>", cambiar_registros_por_pagina)
-    combo.place(relx=0.85, rely=0.1, anchor=NE)
+    combo.place(relx=0.945, rely=0.06, anchor=NE)
 
     # Agregar barras de desplazamiento
     scroll_x = Scrollbar(marco_tabla, orient=HORIZONTAL)
@@ -805,21 +808,21 @@ def Registros():
     tree.pack(expand=YES, fill=BOTH)
 
     # Crear un marco para los botones de navegación
-    marco_botones = Frame(ventana_registros, bg=ventana_registros.cget('bg'))  # Establecer el color de fondo del marco igual al color de fondo de la ventana
+    marco_botones = Frame(pantalla5, bg=pantalla5.cget('bg'))  # Establecer el color de fondo del marco igual al color de fondo de la ventana
     marco_botones.place(relx=0.5, rely=0.95, anchor=CENTER)
 
     # Botones de navegación
-    btn_anterior = Button(marco_botones, text="<< Anterior ", command=anterior_pagina, bg=ventana_registros.cget('bg'), bd=0)  # Establecer el color de fondo del botón igual al color de fondo de la ventana y eliminar el borde
+    btn_anterior = Button(marco_botones, text="<< Anterior ", command=anterior_pagina, bg=pantalla5.cget('bg'), bd=0)  # Establecer el color de fondo del botón igual al color de fondo de la ventana y eliminar el borde
     btn_anterior.pack(side=LEFT, padx=10)
 
-    btn_siguiente = Button(marco_botones, text="Siguiente >>", command=siguiente_pagina, bg=ventana_registros.cget('bg'), bd=0)  # Establecer el color de fondo del botón igual al color de fondo de la ventana y eliminar el borde
+    btn_siguiente = Button(marco_botones, text="Siguiente >>", command=siguiente_pagina, bg=pantalla5.cget('bg'), bd=0)  # Establecer el color de fondo del botón igual al color de fondo de la ventana y eliminar el borde
     btn_siguiente.pack(side=LEFT, padx=10)
 
     # Inicializar la tabla con los primeros registros
     actualizar_tabla()
 
     # Mantener la referencia de la imagen de fondo
-    ventana_registros.image = imagen_fondo
+    pantalla5.image = imagen_fondo
 
     # Cerrar la conexión a la base de datos
     conn.close()
@@ -884,6 +887,8 @@ def Log():
             pantalla2 = Toplevel(pantalla)
             pantalla2.title("BIOMETRIC REGISTER")
             pantalla2.geometry("1280x720")
+            pantalla2.resizable(False, False) 
+            
 
             back = Label(pantalla2, image=imagenB, text="Back")
             back.place(x=0, y=0, relwidth=1, relheight=1)
@@ -987,7 +992,8 @@ def cargar_datos():
 # Ventana principal
 pantalla = Tk()
 pantalla.title("FACE RECOGNITION SYSTEM")
-pantalla.geometry("1280x753")
+pantalla.geometry("1280x720")
+pantalla.resizable(False, False) 
 
 # Fondo
 imagenF = PhotoImage(file="./SetUp/Inicio.png")
@@ -1003,48 +1009,48 @@ imagenB = PhotoImage(file="./SetUp/Back2.png")
 # DNI
 validate_num = pantalla.register(validar_numero)
 InputDNIReg = Entry(pantalla, validate="key", validatecommand=(validate_num, '%S'),font=("Arial", 12))
-InputDNIReg.place(x= 250, y = 310)
+InputDNIReg.place(x= 250, y = 300)
 
 # Botón para cargar datos
 BtCargar = Button(pantalla, text="Cargar Data", command=cargar_datos,bg="grey",
                   highlightbackground="red",highlightthickness=2,fg="red",font=("Helvetica",8, "bold"))
-BtCargar.place(x=450, y=310)
+BtCargar.place(x=450, y=300)
 
 # Names
 InputNameReg = Entry(pantalla,font=("Arial", 12))
-InputNameReg.place(x= 250, y = 370)
+InputNameReg.place(x= 250, y = 360)
 
 # ApellPat
 InputApellPReg = Entry(pantalla,font=("Arial", 12))
-InputApellPReg.place(x= 250, y = 430)
+InputApellPReg.place(x= 250, y = 410)
 
 # ApetMat
 InputApellMReg = Entry(pantalla,font=("Arial", 12))
-InputApellMReg.place(x= 250, y = 490)
+InputApellMReg.place(x= 250, y = 465)
 
 # User
 InputUserReg = Entry(pantalla,font=("Arial", 12))
-InputUserReg.place(x= 250, y = 550)
+InputUserReg.place(x= 250, y = 530)
 
 # Pass
 InputPassReg = Entry(pantalla, font=("Arial", 12), show='*')
-InputPassReg.place(x= 250, y = 610)
+InputPassReg.place(x= 250, y = 580)
 
 # Botones
 # Registro
 imagenBR = PhotoImage(file="./SetUp/BtSign.png")
 BtReg = Button(pantalla, text="Registro", image=imagenBR, height="40", width="200", command=Log,highlightbackground="red",highlightthickness=2)
-BtReg.place(x = 160, y = 670)
+BtReg.place(x = 160, y = 645)
 
 # Inicio de sesion
 imagenBL = PhotoImage(file="./SetUp/BtLogin.png")
 BtSign = Button(pantalla, text="Sign", image=imagenBL, height="40", width="200", command=Sign,highlightbackground="red",highlightthickness=2)
-BtSign.place(x = 610, y = 670)
+BtSign.place(x = 610, y = 645)
 
 # VER REGISTROS
 imagenBT = PhotoImage(file="./SetUp/Asistencia.png")
 BtTbl = Button(pantalla, text="Sign", image=imagenBT, height="40", width="200", command=Registros,highlightbackground="red",highlightthickness=2)
-BtTbl.place(x = 955, y = 670)
+BtTbl.place(x = 955, y = 645)
 
 # Eject
 pantalla.mainloop()
